@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+USER_FILENAME = 'Actfile.rb'
+
+unless File.exists?(USER_FILENAME)
+    $stderr.puts "No #{USER_FILENAME} found!"
+    exit
+end
+
+$:.unshift << '.'
+$:.unshift << File.dirname(File.dirname(`which act`) + '..')
+
+require USER_FILENAME
+require 'lib/act/gcc.rb'
+require 'lib/act/memo.rb'
+require 'lib/act/task.rb'
+
+if ARGV.length == 0
+  act()
+  Act::TaskManager.instance.process(4)
+elsif ARGV[0].eql?("clean")
+  Act::MemoManager.instance.delete_all_output
+end
+  
+Act::MemoManager.instance.persist
+
