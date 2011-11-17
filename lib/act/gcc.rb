@@ -19,7 +19,7 @@ module Act
                     "#{libs.map{ |x| "-l#{x}" }.join(' ')}"
     end
 
-    def compile(filename, output_filename, compile_only = YES, extra_flags = [])
+    def compile(filename, output_filename, compile_only = TRUE, extra_flags = [])
       # Determine compiler to use
       suffix = filename.match(/\.([^\.]+)$/)[1]
       case suffix
@@ -77,9 +77,7 @@ module Act
       end
       MemoManager.instance.memo(libname).output.add(libname)
       lib_task.depends.merge(compile_tasks)
-      compile_tasks.each do |task| TaskManager.instance.give(task) end
-      TaskManager.instance.give(lib_task)
-      return lib_task
+      lib_task
     end
   end
 end

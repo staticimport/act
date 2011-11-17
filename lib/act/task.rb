@@ -10,6 +10,7 @@ module Act
       @command = command
       @depends = Set.new
       @state = :pending
+      TaskManager.instance.give(self)
     end
     def execute
       @state = @command.call

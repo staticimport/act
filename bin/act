@@ -17,9 +17,15 @@ require 'lib/act/task.rb'
 
 if ARGV.length == 0
   act()
-  Act::TaskManager.instance.process(4)
+  Act::TaskManager.instance.process(1)
 elsif ARGV[0].eql?("clean")
+  begin
+    clean()
+  rescue
+  end
   Act::MemoManager.instance.delete_all_output
+else
+  method(ARGV[0]).call
 end
   
 Act::MemoManager.instance.persist

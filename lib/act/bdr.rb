@@ -53,7 +53,6 @@ module Act
         end
       end
       task.depends.merge(depend_tasks)
-      TaskManager.instance.give(task)
       task
     end
 
