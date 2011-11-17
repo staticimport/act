@@ -15,8 +15,10 @@ module Act
       @compile_flags = "#{extras.map{ |x| "-#{x}" }.join(' ')} " +
                        "#{warns.map{ |x| "-W#{x}" }.join(' ')} " +
                        "#{includes.map{ |x| "-I#{x}" }.join(' ')}"
-      @link_flags = "#{lib_dirs.map{ |x| "-L#{x}" }.join(' ')} " +
-                    "#{libs.map{ |x| "-l#{x}" }.join(' ')}"
+      #@link_flags = "#{lib_dirs.map{ |x| "-L#{x}" }.join(' ')} " +
+      #              "#{libs.map{ |x| "-l#{x}" }.join(' ')}"
+      @link_flags = lib_dirs.map{|x| "-L#{x}"} +
+                    libs.map{|x| "-l#{x}"}
     end
 
     def compile(filename, output_filename, compile_only = TRUE, extra_flags = [])
@@ -33,7 +35,7 @@ module Act
       end
 
       # Compile!
-      cmd = "#{compiler} #{@compile_flags} #{extra_flags.join(' ')}"
+      cmd = "#{compiler} #{@compile_flags} #{extra_flags.join(' ')} "
       if compile_only
         cmd += "-c "
       end
@@ -46,10 +48,10 @@ module Act
     end
 
     def executable(source, output, params = {})
-      lib_dirs = params[:libdir] || []
-      libs = params[:lib] || []
-      flags = lib_dirs.map{ |dir| "-L#{dir}" }.concat(libs.map{ |lib| "-L#{lib}" })
-      compile_task(source, lambda { compile(source, output, false, flags) })
+      #lib_dirs = params[:libdir] || []
+      #libs = params[:lib] || []
+      #flags = @lib_dirs.map{ |dir| "-L#{dir}" }.concat(@libs.map{ |lib| "-L#{lib}" })
+      compile_task(source, lambda { compile(source, output, false, @link_flags) })
     end
 
     def static_lib(libname, sources, src_to_outdir)
