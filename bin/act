@@ -9,11 +9,12 @@ end
 
 $:.unshift << '.'
 $:.unshift << File.dirname(File.dirname(`which act`) + '..')
+ACT_HOME = File.dirname(File.dirname(`which act`) + '..')
 
 require USER_FILENAME
-require 'lib/act/gcc.rb'
-require 'lib/act/memo.rb'
-require 'lib/act/task.rb'
+require "#{ACT_HOME}/lib/act/gcc.rb"
+require "#{ACT_HOME}/lib/act/memo.rb"
+require "#{ACT_HOME}/lib/act/task.rb"
 
 if ARGV.length == 0
   act()
